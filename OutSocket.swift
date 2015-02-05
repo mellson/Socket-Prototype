@@ -10,7 +10,7 @@ import Foundation
 
 class OutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     
-    let IP = "localhost"
+    let IP = "192.168.1.10"
     let PORT:UInt16 = 5556
     var socket:GCDAsyncUdpSocket!
     

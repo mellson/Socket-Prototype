@@ -12,6 +12,11 @@ class ViewController: NSViewController {
     var inSocket : InSocket!
     var outSocket : OutSocket!
     
+    func getUptimeInMilliseconds() -> Int {
+        let info = mach_timebase_info
+        return 1
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -21,6 +26,13 @@ class ViewController: NSViewController {
         // Update the view, if already loaded.
         }
     }
+    
+    func upTime() -> UInt64 {
+        let now: UInt64 = mach_absolute_time()
+        var info: mach_timebase_info = mach_timebase_info(numer: 1, denom: 1)
+        mach_timebase_info(&info)
+        return (now * UInt64(info.numer) / UInt64(info.denom))
+    }
 
     @IBAction func startServer(sender: NSButton) {
         inSocket = InSocket()
@@ -28,11 +40,11 @@ class ViewController: NSViewController {
 
     @IBAction func startClient(sender: NSButton) {
         outSocket = OutSocket()
-        outSocket.send("\(mach_absolute_time())")
-//        while true {
-//            
-//            sleep(1)
-//        }
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+    }
+    
+    func update() {
+        outSocket.send("\(upTime())")
     }
 }
 

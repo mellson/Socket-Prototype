@@ -33,7 +33,7 @@ class InSocket: NSObject, GCDAsyncUdpSocketDelegate {
         let strData = data.subdataWithRange(NSMakeRange(0, data.length))
         let msg = NSString(data: strData, encoding: NSUTF8StringEncoding)
         if let clientTime = msg {
-            println("Diff: \(receiveTime-clientTime.integerValue) Client: \(clientTime), Received: \(receiveTime)");
+            println("Client: \(clientTime), Received: \(receiveTime)");
         }
     }
 }
