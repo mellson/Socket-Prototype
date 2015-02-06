@@ -7,10 +7,14 @@
 //
 
 import Cocoa
+import AVFoundation
 
 class ViewController: NSViewController {
     var inSocket : InSocket!
     var outSocket : OutSocket!
+    
+    var click1: AVAudioPlayer?
+    var click2: AVAudioPlayer?
     
     func getUptimeInMilliseconds() -> Int {
         let info = mach_timebase_info
@@ -19,6 +23,13 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let soundUrl1 = NSBundle.mainBundle().URLForResource("Click1", withExtension: "aif")
+        let soundUrl2 = NSBundle.mainBundle().URLForResource("Click2", withExtension: "aif")
+        var error: NSError?
+        click1 = AVAudioPlayer(contentsOfURL: soundUrl1, error: &error)
+        click2 = AVAudioPlayer(contentsOfURL: soundUrl2, error: &error)
+        click1!.play()
+        click2!.play()
     }
 
     override var representedObject: AnyObject? {
@@ -32,6 +43,10 @@ class ViewController: NSViewController {
         var info: mach_timebase_info = mach_timebase_info(numer: 1, denom: 1)
         mach_timebase_info(&info)
         return (now * UInt64(info.numer) / UInt64(info.denom))
+    }
+    
+    @IBAction func playSound(sender: NSButton) {
+        click1!.play()
     }
 
     @IBAction func startServer(sender: NSButton) {
